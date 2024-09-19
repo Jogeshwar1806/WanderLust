@@ -1,0 +1,12 @@
+{
+  "name": "wonderlust",
+  "version": "1.0.0",
+  "description": "**WonderLust** is a travel planner web application designed to help clients plan their trips seamlessly. Whether you're organizing a quick weekend getaway or a month-long adventure, WonderLust will assist you with itinerary management, destination exploration, and personalized travel recommendations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jogeshwar Mishra",
+  "license": "ISC"
+}
