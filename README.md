@@ -1,5 +1,5 @@
-# Wonderland 🌍✨
-**Wonderland** is a travel planner web application designed to help clients plan their trips seamlessly. Whether you're organizing a quick weekend getaway or a month-long adventure, Wonderland will assist you with itinerary management, destination exploration, and personalized travel recommendations.
+# WonderLust 🌍✨
+**WonderLust** is a travel planner web application designed to help clients plan their trips seamlessly. Whether you're organizing a quick weekend getaway or a month-long adventure, WonderLust will assist you with itinerary management, destination exploration, and personalized travel recommendations.
 
 ## Features
 - **Custom Itinerary Planning**: Easily create, edit, and share travel plans.
