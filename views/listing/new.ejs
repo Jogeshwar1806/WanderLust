@@ -1,0 +1,79 @@
+<% layout("layouts/boilerplate")-%>
+<div class="row">
+  <div class="col-8 offset-2">
+    <br />
+    <h3>Fill the form to add a listing</h3>
+    <form action="/listings" method="post" novalidate class="needs-validation">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          placeholder="Add a catchy title."
+          name="listing[title]"
+          class="form-control"
+          required
+        />
+        <div class="valid-feedback">Title looks good!</div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea
+          name="listing[description]"
+          id="desc"
+          class="form-control"
+          required
+          placeholder="Enter your desc..."
+        ></textarea>
+        <div class="invalid-feedback">Description should be valid!</div>
+
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image Link/URL</label>
+        <input
+          type="text"
+          placeholder="Image url/link"
+          name="listing[image]"
+          class="form-control"
+        />
+      </div>
+      <div class="row">
+        <div class="mb-3 col-md-4">
+          <label for="price" class="form-label">Price</label>
+          <input
+            name="listing[price]"
+            placeholder="1200"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Enter valid amount!</div>
+        </div>
+
+        <div class="mb-3 col-md-8">
+          <label for="country" class="form-label">Country</label>
+          <input
+            type="text"
+            placeholder="India"
+            name="listing[country]"
+            class="form-control"
+            required
+          />
+          <div class="invalid-feedback">Enter country name!</div>
+        </div>
+
+      </div>
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input
+          type="text"
+          placeholder="Bhubaneswar, Odisha, 751024"
+          name="listing[location]"
+          class="form-control"
+          required
+        />
+        <div class="invalid-feedback">Enter your location!</div>
+      </div>
+      <button class="btn btn-dark add-btn">Add</button>
+    </form>
+    <br /><br /><br />
+  </div>
+</div>
