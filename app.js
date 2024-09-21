@@ -38,6 +38,19 @@ const wrapAsync = require("./utils/wrapAsync.js");
 //Require ExpressError for error handling
 const ExpressError = require("./utils/ExpressError.js");
 
+//Require listingSchema from schema.js
+const { listingSchema } = require("./schema.js");
+//created function which uses joi for error handling(form validation)
+function validateListing(req, res, next) {
+  let { error } = listingSchema.validate(req.body);
+  if (error) {
+    let errMsg = error.details.map((el)=>el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  }else{
+    next();
+  }
+}
+
 //This is root page
 app.get("/", (req, res) => {
   res.send("Hey Root");
@@ -79,15 +92,9 @@ app.get(
 
 //Create Route
 app.post(
-  "/listings",
+  "/listings",validateListing,
   wrapAsync(async (req, res, next) => {
-    if(!req.body.listing){
-      throw new ExpressError(400,"Bad Request Listing is not defined.");
-    }
     const newListing = new Listing(req.body.listing);
-    if(!newListing.title){
-      throw new ExpressError(400,"Title is not defined.");
-    }
     console.log(newListing);
     await newListing.save();
     res.redirect("/listings");
@@ -96,11 +103,13 @@ app.post(
 
 //Update Route
 app.put(
-  "/listings/:id",
+  "/listings/:id",validateListing,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const newListing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
-    console.log('newListing', newListing);
+    const newListing = await Listing.findByIdAndUpdate(id, {
+      ...req.body.listing,
+    });
+    console.log("newListing", newListing);
     res.redirect(`/listings/${id}`);
   })
 );
