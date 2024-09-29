@@ -1,25 +1,13 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const ExpressError = require("../utils/ExpressError.js");
 //require WrapAsync for error handling
 const wrapAsync = require("../utils/wrapAsync.js");
-//Require listingSchema and reviewSchema from schema.js
-const { reviewSchema } = require("../schema.js");
 //Listing is required
 const Listing = require("../models/listing.js");
 //Review is Required
 const Review = require("../models/review.js");
 
-//created function which uses joi for error handling(form validation) for Reviews for a list
-function validateReview(req, res, next) {
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-}
+const {validateReview} = require("../middleware.js");
 
 //Reviews Route
 //Reviews-Post Route
