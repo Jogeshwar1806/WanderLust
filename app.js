@@ -16,20 +16,50 @@ app.use(express.json());
 
 app.use(methodOverride("_method"));
 
-//require cookie-parser
-const cookieParser = require("cookie-parser");
-
 // initializing mongoose
 const mongoose = require("mongoose");
 
 main()
-.then(() => {
-  console.log("mongoose is working.");
-})
-.catch((err) => console.log(err));
+  .then(() => {
+    console.log("mongoose is working.");
+  })
+  .catch((err) => console.log(err));
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/Wanderlust");
 }
+
+//require cookie-parser
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
+//require express-session
+const session = require("express-session");
+
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+  },
+};
+
+app.use(session(sessionOptions));
+
+//Require connect-Flash
+const flash = require("connect-flash");
+
+app.use(flash());
+
+//middleware for the flash();
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+
+  next();
+});
 
 //Router is required for Routing the websites (for listings)
 const listings = require("./routes/listing.js");
@@ -44,13 +74,12 @@ const ExpressError = require("./utils/ExpressError.js");
 
 //This is root page
 app.get("/", (req, res) => {
+  console.dir(req.cookies);
   res.send("Hey Root");
 });
 
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",reviews);
-
-
+app.use("/listings", listings);
+app.use("/listings/:id/reviews", reviews);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!!"));
