@@ -39,7 +39,7 @@ const session = require("express-session");
 const sessionOptions = {
   secret: "mysupersecretcode",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -56,12 +56,6 @@ const flash = require("connect-flash");
 //middleware for flash
 app.use(flash());
 
-//middleware for the flash();
-app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  next();
-});
 
 //Requiring passport, passport-local and /models/User.js
 const passport = require("passport");
@@ -74,6 +68,16 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//middleware for the flash();
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  res.locals.currUser = req.user;
+  console.log(res.locals.currUser);
+  next();
+});
+
 
 //Router is required for Routing the websites (for listings)
 const listingRouter = require("./routes/listing.js");
@@ -95,15 +99,6 @@ app.get("/", (req, res) => {
   res.send("Hey Root");
 });
 
-app.get("/demouser", async (req, res) => {
-  let fakeUser = new User({
-    email: "abc@gmail.com",
-    username: "abc",
-  });
-
-   let registeredUser = await User.register(fakeUser, "helloworld");
-   res.send(registeredUser);
-});
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
