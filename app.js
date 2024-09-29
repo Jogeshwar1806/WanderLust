@@ -35,6 +35,7 @@ app.use(cookieParser());
 //require express-session
 const session = require("express-session");
 
+//session options for express-sessions
 const sessionOptions = {
   secret: "mysupersecretcode",
   resave: false,
@@ -46,26 +47,42 @@ const sessionOptions = {
   },
 };
 
+//middleware for express-session
 app.use(session(sessionOptions));
 
 //Require connect-Flash
 const flash = require("connect-flash");
 
+//middleware for flash
 app.use(flash());
 
 //middleware for the flash();
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-
   next();
 });
 
+//Requiring passport, passport-local and /models/User.js
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
+
+//middleware for using passport
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 //Router is required for Routing the websites (for listings)
-const listings = require("./routes/listing.js");
+const listingRouter = require("./routes/listing.js");
 
 //Router is required for Routing the websites (for reviews)
-const reviews = require("./routes/review.js");
+const reviewRouter = require("./routes/review.js");
+
+//Router is required for Routing the websites (for users)
+const userRouter = require("./routes/user.js");
 
 const { title } = require("process");
 
@@ -78,8 +95,19 @@ app.get("/", (req, res) => {
   res.send("Hey Root");
 });
 
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);
+app.get("/demouser", async (req, res) => {
+  let fakeUser = new User({
+    email: "abc@gmail.com",
+    username: "abc",
+  });
+
+   let registeredUser = await User.register(fakeUser, "helloworld");
+   res.send(registeredUser);
+});
+
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!!"));
