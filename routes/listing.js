@@ -5,9 +5,7 @@ const wrapAsync = require("../utils/wrapAsync.js");
 //Listing is required
 const Listing = require("../models/listing.js");
 const { title } = require("process");
-const { isLoggedIn,isOwner,validateListing } = require("../middleware.js");
-
-
+const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 
 //Index Listing Route
 router.get(
@@ -26,7 +24,8 @@ router.get("/new", isLoggedIn, (req, res) => {
 //Edit Listing Route
 router.get(
   "/:id/edit",
-  isLoggedIn,isOwner,
+  isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
@@ -44,7 +43,7 @@ router.get(
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id)
-      .populate("reviews")
+      .populate({ path: "reviews", populate: { path: "author" } })
       .populate("owner");
     if (!listing) {
       req.flash("error", "Listing Not Found!");
@@ -72,7 +71,8 @@ router.post(
 //Update Listing Route
 router.put(
   "/:id",
-  isLoggedIn,isOwner,
+  isLoggedIn,
+  isOwner,
   validateListing,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
@@ -89,7 +89,8 @@ router.put(
 //Delete Listing Route
 router.delete(
   "/:id",
-  isLoggedIn,isOwner,
+  isLoggedIn,
+  isOwner,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
