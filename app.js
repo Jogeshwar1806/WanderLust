@@ -1,9 +1,16 @@
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
+
+
 // initializing express
 const express = require("express");
 const app = express();
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/ " });
 let port = 8080;
 
 app.set("views", path.join(__dirname, "views"));
@@ -56,7 +63,6 @@ const flash = require("connect-flash");
 //middleware for flash
 app.use(flash());
 
-
 //Requiring passport, passport-local and /models/User.js
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -78,7 +84,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 //Router is required for Routing the websites (for listings)
 const listingRouter = require("./routes/listing.js");
 
@@ -98,7 +103,6 @@ app.get("/", (req, res) => {
   console.dir(req.cookies);
   res.send("Hey Root");
 });
-
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);

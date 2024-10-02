@@ -7,9 +7,9 @@
     <a href="/listings/<%=listing._id%>" class="listing-link">
       <div class="card col listing-card">
         <img
-          src="<%=listing.image%>"
+          src="<%=listing.image.url%>"
           class="card-img-top"
-          alt="listing Image"
+          alt="<%=listing.image.filename%>>"
           style="height: 20rem"
         />
         <div class="card-img-overlay"></div>

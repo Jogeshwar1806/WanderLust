@@ -8,6 +8,7 @@
       method="post"
       novalidate
       class="naad-validation"
+      enctype="multipart/form-data"
     >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -28,15 +29,16 @@
         <div class="invalid-feedback">Description should be valid!</div>
       </div>
       <div class="mb-3">
-        <label for="image" class="form-label">Image link/URL</label>
+        Original Listing Image <br>
+        <img src="<%=originalImageUrl%>" alt="<%=listing.image.filename%>">
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Updated Image link/URL</label>
         <input
-          type="text"
-          value="<%=listing.image%>"
+          type="file"
           name="listing[image]"
           class="form-control"
-          required
         />
-        <div class="invalid-feedback">Please enter a valid link!</div>
       </div>
 
       <div class="row">

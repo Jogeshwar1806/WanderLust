@@ -2,7 +2,13 @@
 <div class="row mt-3">
   <div class="col-8 offset-3">
     <h3>Fill the form to add a listing</h3>
-    <form action="/listings" method="post" novalidate class="needs-validation">
+    <form
+      action="/listings"
+      method="post"
+      novalidate
+      class="needs-validation"
+      enctype="multipart/form-data"
+    >
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input
@@ -26,12 +32,12 @@
         <div class="invalid-feedback">Description should be valid!</div>
       </div>
       <div class="mb-3">
-        <label for="image" class="form-label">Image Link/URL</label>
+        <label for="image" class="form-label">Upload Listing Image</label>
         <input
-          type="text"
-          placeholder="Image url/link"
+          type="file"
           name="listing[image]"
           class="form-control"
+          required
         />
       </div>
       <div class="row">
