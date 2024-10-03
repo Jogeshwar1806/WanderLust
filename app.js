@@ -99,10 +99,6 @@ const { title } = require("process");
 const ExpressError = require("./utils/ExpressError.js");
 
 //This is root page
-app.get("/", (req, res) => {
-  console.dir(req.cookies);
-  res.send("Hey Root");
-});
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
